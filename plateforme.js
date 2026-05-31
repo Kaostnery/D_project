@@ -4,7 +4,6 @@
 
 let ARCHIVES = {};
 
-
 const ECHOES = [
     "◈ Une présence semble vous observer.",
     "◈ Elle progresse.",
@@ -19,7 +18,7 @@ const STORAGE_KEY = "spiritsV3";
    ÉTAT
    ========================= */
 
-let unlocked = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+let unlocked = [];
 
 /* =========================
    UTILITAIRES
@@ -28,63 +27,98 @@ let unlocked = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 const $ = id => document.getElementById(id);
 
 function showMessage(text, duration = 5000) {
+
     const m = $("msg");
+
     m.innerText = text;
     m.style.display = "block";
-    setTimeout(() => { m.style.display = "none"; }, duration);
+
+    setTimeout(() => {
+        m.style.display = "none";
+    }, duration);
 }
 
 /* =========================
-   FRAGMENTS
+   CHIFFREMENT
    ========================= */
 
 function caesar(str, shift) {
+
     return str
-        .toUpperCase()
         .split("")
         .map(c => {
+
             if (c < "A" || c > "Z") return c;
-            return String.fromCharCode((c.charCodeAt(0) - 65 + shift) % 26 + 65);
+
+            return String.fromCharCode(
+                ((c.charCodeAt(0) - 65 + shift) % 26) + 65
+            );
+
         })
         .join("")
         .toLowerCase();
 }
 
 /* =========================
-   FRAGMENTS
+   AFFICHAGE
    ========================= */
 
 function render() {
-    $("docs").innerHTML = unlocked
-        .filter(code => ARCHIVES[code])
-        .map(code => `
+
+    const docs = $("docs");
+
+    docs.innerHTML = "";
+
+    unlocked.forEach(code => {
+
+        if (!ARCHIVES[code]) return;
+
+        docs.innerHTML += `
             <div class="doc">
-                <h3><a href="${caesar(code, 3)}.html">${ARCHIVES[code].title}</a></h3>
+                <h3>
+                    <a href="${caesar(code,3)}.html">
+                        ${ARCHIVES[code].title}
+                    </a>
+                </h3>
                 <p>${ARCHIVES[code].content}</p>
-            </div>`)
-        .join("");
+            </div>
+        `;
+    });
 }
 
 /* =========================
-   DÉVERROUILLAGE
+   RECHERCHE
    ========================= */
 
 function unlock() {
+
     const code = $("code").value.trim();
-    const statusEl = $("status");
 
     if (!ARCHIVES[code]) {
-        statusEl.innerText = "◈ Aucune résonance détectée.";
+
+        $("status").innerText =
+            "◈ Aucune résonance détectée.";
+
         return;
     }
 
     if (!unlocked.includes(code)) {
+
         unlocked.push(code);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(unlocked));
-        showMessage("◈ Signature reconnue.\nLe réseau a réagi.");
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(unlocked)
+        );
+
+        showMessage(
+            "◈ Signature reconnue.\nLe réseau a réagi."
+        );
     }
 
-    statusEl.innerText = "◈ Résonance détectée.";
+    $("status").innerText =
+        "◈ Résonance détectée.";
+
     render();
 }
 
@@ -96,29 +130,51 @@ const canvas = $("particles");
 const ctx = canvas.getContext("2d");
 
 function resize() {
+
     canvas.width = innerWidth;
     canvas.height = innerHeight;
 }
 
-const particles = Array.from({ length: 80 }, () => ({
-    x: Math.random() * innerWidth,
-    y: Math.random() * innerHeight,
-    s: 1 + Math.random() * 3,
-    v: 0.2 + Math.random()
-}));
+const particles = Array.from(
+    { length: 80 },
+    () => ({
+        x: Math.random() * innerWidth,
+        y: Math.random() * innerHeight,
+        s: 1 + Math.random() * 3,
+        v: 0.2 + Math.random()
+    })
+);
 
 function anim() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
     ctx.fillStyle = "rgba(76,201,240,.35)";
 
-    for (const p of particles) {
+    particles.forEach(p => {
+
         p.y -= p.v;
-        if (p.y < 0) p.y = innerHeight;
+
+        if (p.y < 0)
+            p.y = innerHeight;
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
+
+        ctx.arc(
+            p.x,
+            p.y,
+            p.s,
+            0,
+            Math.PI * 2
+        );
+
         ctx.fill();
-    }
+    });
 
     requestAnimationFrame(anim);
 }
@@ -128,42 +184,103 @@ function anim() {
    ========================= */
 
 function spawnGhost() {
+
     const g = document.createElement("div");
+
     g.className = "ghost";
-    g.style.left = `${Math.random() * innerWidth}px`;
-    g.style.top  = `${innerHeight - 100}px`;
+
+    g.style.left =
+        Math.random() * innerWidth + "px";
+
+    g.style.top =
+        (innerHeight - 100) + "px";
+
     $("ghosts").appendChild(g);
+
     setTimeout(() => g.remove(), 20000);
 }
 
 /* =========================
-   INIT
+   INITIALISATION
    ========================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    resize();
-    addEventListener("resize", resize);
-    anim();
+        resize();
+        addEventListener("resize", resize);
 
-    const title = document.querySelector(".title");
-    if (title) {
-        title.addEventListener("click", () => location.reload());
-        title.style.cursor = "pointer";
+        anim();
+
+        const title =
+            document.querySelector(".title");
+
+        if (title) {
+
+            title.addEventListener(
+                "click",
+                () => location.reload()
+            );
+
+            title.style.cursor = "pointer";
+        }
+
+        $("code")?.addEventListener(
+            "keydown",
+            e => {
+
+                if (e.key === "Enter") {
+                    unlock();
+                }
+            }
+        );
+
+        setInterval(
+            spawnGhost,
+            12000
+        );
+
+        setInterval(() => {
+
+            showMessage(
+                ECHOES[
+                    Math.floor(
+                        Math.random() *
+                        ECHOES.length
+                    )
+                ]
+            );
+
+        }, 25000);
+
+        setInterval(() => {
+
+            $("souls").innerText =
+                40 + Math.floor(
+                    Math.random() * 60
+                );
+
+        }, 4000);
+
+        fetch("archives.json")
+            .then(res => res.json())
+            .then(data => {
+
+                ARCHIVES = data;
+
+                unlocked = JSON.parse(
+                    localStorage.getItem(STORAGE_KEY)
+                ) || [];
+
+                render();
+            })
+            .catch(err => {
+
+                console.error(
+                    "Erreur chargement archives.json",
+                    err
+                );
+            });
     }
-
-    setInterval(spawnGhost, 12000);
-    setInterval(() => showMessage(ECHOES[Math.floor(Math.random() * ECHOES.length)]), 25000);
-    setInterval(() => { $("souls").innerText = 40 + Math.floor(Math.random() * 60); }, 4000);
-
-    fetch("archives.json")
-        .then(res => res.json())
-        .then(data => {
-    ARCHIVES = data;
-    unlocked = []; // repart de zéro à chaque visite
-
-    $("code")?.addEventListener("keydown", e => {
-        if (e.key === "Enter") unlock();
-    });
-});
-});
+);
