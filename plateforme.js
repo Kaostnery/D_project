@@ -70,7 +70,7 @@ function render() {
    ========================= */
 
 function unlock() {
-    const code = $("code").value.trim();
+    const code = $("code").value.trim().toUppercase();
     const statusEl = $("status");
 
     if (!ARCHIVES[code]) {
