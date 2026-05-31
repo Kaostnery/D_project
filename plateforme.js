@@ -159,12 +159,11 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch("archives.json")
         .then(res => res.json())
         .then(data => {
-            ARCHIVES = data;
+    ARCHIVES = data;
+    unlocked = []; // repart de zéro à chaque visite
 
-            render();
-
-            $("code")?.addEventListener("keydown", e => {
-                if (e.key === "Enter") unlock();
-            });
-        });
+    $("code")?.addEventListener("keydown", e => {
+        if (e.key === "Enter") unlock();
+    });
+});
 });
