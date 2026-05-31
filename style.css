@@ -1,0 +1,122 @@
+:root{
+--bg:#05060a;
+--panel:#0f1219;
+--accent:#9d4edd;
+--cyan:#4cc9f0;
+--text:#eef2ff;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+overflow:hidden;
+background:radial-gradient(circle at top,rgba(157,78,221,.18),transparent 35%),var(--bg);
+color:var(--text);
+font-family:Segoe UI,sans-serif;
+}
+#particles,#ghosts{
+position:fixed;
+inset:0;
+pointer-events:none;
+}
+.header{
+position:relative;
+z-index:5;
+text-align:center;
+padding:25px;
+border-bottom:1px solid rgba(157,78,221,.2);
+backdrop-filter:blur(8px);
+}
+.title{
+font-size:2rem;
+color:var(--accent);
+letter-spacing:4px;
+text-shadow:0 0 20px var(--accent);
+animation:flicker 8s infinite;
+}
+.layout{
+position:relative;
+z-index:5;
+display:grid;
+grid-template-columns:280px 1fr;
+gap:20px;
+padding:20px;
+max-width:1300px;
+margin:auto;
+height:calc(100vh - 110px);
+}
+.panel{
+background:rgba(15,18,25,.88);
+border:1px solid rgba(157,78,221,.15);
+border-radius:16px;
+padding:20px;
+overflow:auto;
+backdrop-filter:blur(10px);
+}
+.menu{padding:10px;background:#090b10;border-radius:8px;margin-bottom:8px}
+input{
+width:100%;padding:12px;border:none;border-radius:10px;
+background:#090b10;color:white;
+}
+button{
+margin-top:10px;padding:12px 18px;border:none;border-radius:10px;
+background:linear-gradient(90deg,var(--accent),var(--cyan));
+color:white;cursor:pointer;
+}
+.doc{
+margin-top:15px;
+padding:15px;
+background:#090b10;
+border-left:4px solid var(--accent);
+border-radius:10px;
+animation:appear .5s;
+}
+.ghost{
+position:absolute;
+width:80px;
+height:140px;
+background:radial-gradient(circle at 50% 30%, rgba(255,255,255,.18), rgba(255,255,255,.02));
+border-radius:50% 50% 40% 40%;
+filter:blur(4px);
+opacity:0;
+animation:floatGhost 20s linear forwards;
+}
+.message{
+position:fixed;
+right:20px;
+bottom:20px;
+max-width:320px;
+background:rgba(10,10,15,.95);
+border:1px solid rgba(76,201,240,.3);
+padding:15px;
+border-radius:12px;
+z-index:20;
+display:none;
+}
+@keyframes floatGhost{
+0%{opacity:0;transform:translateY(50px)}
+15%{opacity:.15}
+85%{opacity:.12}
+100%{opacity:0;transform:translateY(-120px)}
+}
+@keyframes flicker{
+0%,100%{opacity:1}
+98%{opacity:.8}
+99%{opacity:.4}
+}
+@keyframes appear{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1}
+}
+@media(max-width:900px){
+body{overflow:auto}
+.layout{grid-template-columns:1fr;height:auto}
+}
+.doc h3 a {
+    color: inherit;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.doc h3 a:hover {
+    text-decoration: underline;
+}
