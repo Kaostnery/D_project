@@ -2,12 +2,14 @@
    DONNÉES
    ========================= */
 
-const ARCHIVES = {
-    PRMCDE: { title: "Coucou, c'est nous les esprits !",  content: "Une équation simple comme bonjour" },
-    RAY:    { title: "Journal de Ray",        content: "Je ne sais plus si les gens vont bien." },
-    DAEMON: { title: "Rapport Daemon",        content: "L'humanité ne souffrirait plus si elle cessait de ressentir." }
-};
+let ARCHIVES = {};
 
+fetch("archives.json")
+    .then(res => res.json())
+    .then(data => {
+        ARCHIVES = data;
+        render();
+    });
 const ECHOES = [
     "◈ Une présence semble vous observer.",
     "◈ Elle progresse.",
