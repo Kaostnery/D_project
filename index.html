@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archives des Esprits V3</title>
+ <link rel="stylesheet" href="style.css">
+<style>
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+<div id="ghosts"></div>
+<div class="header">
+<div class="title">◈ PLAN DES ESPRITS V3 ◈</div>
+<div>Le réseau semble... habité.</div>
+</div>
+<div class="layout">
+<div class="panel">
+<h3>Navigation</h3>
+<div class="menu">◈ Fragments</div>
+<div class="menu">◈ Signatures</div>
+<div class="menu">◈ Échos</div>
+<hr>
+<div>Présences détectées : <span id="souls">47</span></div>
+</div>
+<div class="panel">
+<h2>Clé mémorielle</h2>
+<input id="code" placeholder="PRMCDE..." />
+<button onclick="unlock()">Établir le lien</button>
+<p id="status"></p>
+<div id="docs"></div>
+</div>
+</div>
+<div class="message" id="msg"></div>
+<script src="plateforme.js"></script>
+</body>
+</html>
