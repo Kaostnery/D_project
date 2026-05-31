@@ -41,9 +41,19 @@ margin-top:40px;
 opacity:.6;
 font-style:italic;
 }
-  body{
-    overflow-y:auto !important;
-  }
+  html, body {
+    overflow-y: auto !important;
+    height: auto !important;
+}
+
+#particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+ 
 </style>
 
 </head>
