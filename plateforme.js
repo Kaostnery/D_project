@@ -141,10 +141,14 @@ function spawnGhost() {
    ========================= */
 
 document.addEventListener("DOMContentLoaded", () => {
-   fetch("archives.json")
+
+    fetch("archives.json")
         .then(res => res.json())
         .then(data => {
             ARCHIVES = data;
+            render();
+        });
+
     resize();
     addEventListener("resize", resize);
     anim();
@@ -162,6 +166,4 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(spawnGhost, 12000);
     setInterval(() => showMessage(ECHOES[Math.floor(Math.random() * ECHOES.length)]), 25000);
     setInterval(() => { $("souls").innerText = 40 + Math.floor(Math.random() * 60); }, 4000);
-
-    render();
 });
