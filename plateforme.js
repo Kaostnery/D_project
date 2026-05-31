@@ -69,21 +69,23 @@ function render() {
 
     docs.innerHTML = "";
 
-    unlocked.forEach(code => {
+    [...unlocked]
+        .reverse()
+        .forEach(code => {
 
-        if (!ARCHIVES[code]) return;
+            if (!ARCHIVES[code]) return;
 
-        docs.innerHTML += `
-            <div class="doc">
-                <h3>
-                    <a href="${caesar(code,3)}.html">
-                        ${ARCHIVES[code].title}
-                    </a>
-                </h3>
-                <p>${ARCHIVES[code].content}</p>
-            </div>
-        `;
-    });
+            docs.innerHTML += `
+                <div class="doc">
+                    <h3>
+                        <a href="${caesar(code,3)}.html">
+                            ${ARCHIVES[code].title}
+                        </a>
+                    </h3>
+                    <p>${ARCHIVES[code].content}</p>
+                </div>
+            `;
+        });
 }
 
 /* =========================
