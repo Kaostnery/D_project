@@ -4,12 +4,7 @@
 
 let ARCHIVES = {};
 
-fetch("archives.json")
-    .then(res => res.json())
-    .then(data => {
-        ARCHIVES = data;
-        render();
-    });
+
 const ECHOES = [
     "◈ Une présence semble vous observer.",
     "◈ Elle progresse.",
@@ -146,6 +141,10 @@ function spawnGhost() {
    ========================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+   fetch("archives.json")
+        .then(res => res.json())
+        .then(data => {
+            ARCHIVES = data;
     resize();
     addEventListener("resize", resize);
     anim();
